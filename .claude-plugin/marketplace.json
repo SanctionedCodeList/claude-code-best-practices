@@ -1,0 +1,21 @@
+{
+  "name": "claude-code-best-practices",
+  "owner": {
+    "name": "Parker Hancock"
+  },
+  "metadata": {
+    "description": "Best practices and skills for Claude Code development",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "best-practices",
+      "description": "Claude Code best practices including skill creation, development workflows, and productivity tools",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/skill-creator"
+      ]
+    }
+  ]
+}
