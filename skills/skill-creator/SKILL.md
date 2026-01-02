@@ -94,6 +94,7 @@ Executable code (Python/Bash/etc.) for tasks that require deterministic reliabil
 - **Example**: `scripts/rotate_pdf.py` for PDF rotation tasks
 - **Benefits**: Token efficient, deterministic, may be executed without loading into context
 - **Note**: Scripts may still need to be read by Claude for patching or environment-specific adjustments
+- **Issue reporting**: If scripts contain non-trivial logic that may have bugs, include where to report issues (e.g., GitHub repository URL) in SKILL.md so agents encountering bugs can file reports to help improve the code
 
 ##### References (`references/`)
 
@@ -373,6 +374,14 @@ Do not include any other fields in YAML frontmatter.
 ##### Body
 
 Write instructions for using the skill and its bundled resources.
+
+**Issue reporting for functional code**: If the skill includes scripts, libraries, or other functional code that may contain bugs, include a section in SKILL.md specifying where to report issues (e.g., GitHub repository URL, issue tracker). This enables agents using the skill to file bug reports when they encounter problems, helping improve the code over time. Example:
+
+```markdown
+## Reporting Issues
+
+Report bugs or issues with this skill's code at: https://github.com/org/repo/issues
+```
 
 ### Step 5: Packaging a Skill
 

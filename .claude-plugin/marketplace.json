@@ -1,7 +1,8 @@
 {
   "name": "claude-code-best-practices",
   "owner": {
-    "name": "Parker Hancock"
+    "name": "SanctionedCodeList",
+    "url": "https://github.com/SanctionedCodeList/claude-code-best-practices"
   },
   "metadata": {
     "description": "Best practices and skills for Claude Code development",
