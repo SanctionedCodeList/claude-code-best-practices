@@ -600,3 +600,20 @@ scripts/structure_validate.py --root /path/to/skill -v           # Verbose with 
 - Keep files under 300 lines for readability and context efficiency
 - Ensure all content files are reachable from SKILL.md
 - Use `--graph` to visualize skill structure as a mermaid diagram
+
+## Reporting Issues
+
+If you encounter bugs with the skill creation tools, or want to request new features, use the GitHub CLI:
+
+```bash
+# Report a bug
+gh issue create --repo SanctionedCodeList/claude-code-best-practices --title "Bug: [description]" --body "## Problem\n[Describe the issue]\n\n## Script affected\n[e.g., init_skill.py, package_skill.py]\n\n## Error message\n[Include any error output]\n\n## Steps to reproduce\n[How to trigger it]"
+
+# Request a feature
+gh issue create --repo SanctionedCodeList/claude-code-best-practices --title "Feature: [description]" --body "## Use case\n[Why this is needed]\n\n## Proposed solution\n[How it might work]"
+
+# Check existing issues first
+gh issue list --repo SanctionedCodeList/claude-code-best-practices
+```
+
+This helps improve the skill creation tools for all users.
