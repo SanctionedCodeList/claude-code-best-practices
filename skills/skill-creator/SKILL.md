@@ -344,6 +344,7 @@ Consult these helpful guides based on your skill's needs:
 
 - **Multi-step processes**: See references/workflows.md for sequential workflows and conditional logic
 - **Specific output formats or quality standards**: See references/output-patterns.md for template and example patterns
+- **Testable code examples**: See references/testable-code-examples.md for validating code snippets in documentation
 
 These files contain established best practices for effective skill design.
 
