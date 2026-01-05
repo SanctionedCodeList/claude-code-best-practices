@@ -15,8 +15,7 @@
       "source": "./",
       "strict": false,
       "skills": [
-        "./skills/skill-creator",
-        "./skills/sessions"
+        "./skills/best-practices"
       ]
     }
   ]
