@@ -9,19 +9,18 @@ Search and read Claude Code session histories with a context-efficient API.
 
 ## Setup
 
-Run the installation script before first use:
+Before using any API commands, run the install script:
 
 ```bash notest
 ./install.sh
 ```
 
-Build the index (required before searching):
+This script is idempotent - it installs dependencies and syncs the session index. Run it:
+- First time to set up
+- Periodically to index new sessions
+- After any errors (ensures clean state)
 
-```bash notest
-python3 scripts/sessions.py build -v
-```
-
-The index is stored in `~/.claude/session-index/` and updates incrementally.
+Index location: `~/.claude/session-index/`
 
 ## API
 
@@ -291,21 +290,13 @@ while True:
 
 ## Index Maintenance
 
-Rebuild index after many new sessions:
+Run `./install.sh` to sync new sessions (incremental, fast).
+
+Force full rebuild if index seems corrupted:
 
 ```bash notest
-python3 scripts/sessions.py build -v
+.venv/bin/python scripts/sessions.py build --force -v
 ```
-
-Force full rebuild:
-
-```bash notest
-python3 scripts/sessions.py build --force -v
-```
-
-Index location: `~/.claude/session-index/`
-- `sessions.db` - SQLite metadata
-- `embeddings.npy` - Sentence embeddings for semantic search
 
 ## Reporting Issues
 
