@@ -1,6 +1,6 @@
 ---
 name: best-practices
-description: "Claude Code best practices: skill creation, plugin authoring, session history, and configuration. Four sub-skills for power users."
+description: "Claude Code best practices: skill creation, plugin authoring, context injection, session history, and configuration. Five sub-skills for power users."
 ---
 
 # Best Practices
@@ -13,6 +13,7 @@ Tools and guidance for Claude Code power users.
 |-------------------|-------|
 | **Create a new skill** | [skill-creator/](./skill-creator/SKILL.md) |
 | **Author a plugin** | [plugin-authoring/](./plugin-authoring/SKILL.md) |
+| **Inject context (hooks, agents, MCP)** | [context-injection/](./context-injection/SKILL.md) |
 | **Search past sessions** | [sessions/](./sessions/SKILL.md) |
 | **Configure CLAUDE.md** | [claude-md/](./claude-md/SKILL.md) |
 
@@ -33,6 +34,14 @@ Guide for creating and distributing Claude Code plugins. Covers:
 - Directory structure and marketplace.json
 - Single plugin vs multi-plugin marketplaces
 - Installation workflow and storage locations
+
+### context-injection
+
+Guide to Claude Code's five context injection mechanisms. Covers:
+- Skills, hooks, agents, commands, and MCP servers
+- When to use each mechanism (decision tree)
+- Token efficiency and progressive loading
+- Hook patterns for common use cases
 
 ### sessions
 
