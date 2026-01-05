@@ -1,6 +1,6 @@
 ---
 name: best-practices
-description: "Claude Code best practices: skill creation, session history, and CLAUDE.md configuration. Three sub-skills for power users."
+description: "Claude Code best practices: skill creation, plugin authoring, session history, and configuration. Four sub-skills for power users."
 ---
 
 # Best Practices
@@ -12,6 +12,7 @@ Tools and guidance for Claude Code power users.
 | What do you need? | Go to |
 |-------------------|-------|
 | **Create a new skill** | [skill-creator/](./skill-creator/SKILL.md) |
+| **Author a plugin** | [plugin-authoring/](./plugin-authoring/SKILL.md) |
 | **Search past sessions** | [sessions/](./sessions/SKILL.md) |
 | **Configure CLAUDE.md** | [claude-md/](./claude-md/SKILL.md) |
 
@@ -24,6 +25,14 @@ Comprehensive guide for building effective Claude Code skills. Covers:
 - Progressive disclosure patterns
 - Data model design for AI systems
 - Validation and packaging tools
+
+### plugin-authoring
+
+Guide for creating and distributing Claude Code plugins. Covers:
+- Plugin vs skill distinction
+- Directory structure and marketplace.json
+- Single plugin vs multi-plugin marketplaces
+- Installation workflow and storage locations
 
 ### sessions
 
