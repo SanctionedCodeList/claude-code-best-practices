@@ -1,8 +1,3 @@
----
-name: context-injection
-description: "Guide to Claude Code's five context injection mechanisms: skills, hooks, agents, commands, and MCP servers. Covers when to use each and token efficiency."
----
-
 # Context Injection Mechanisms
 
 Claude Code provides five ways to inject context into conversations. Each serves different use cases.

@@ -1,8 +1,3 @@
----
-name: claude-md
-description: "Guide for writing effective CLAUDE.md and AGENTS.md files. Covers file hierarchy, recommended sections, and plugin issue reporting."
----
-
 # CLAUDE.md & AGENTS.md Guide
 
 Configure Claude Code and other AI coding assistants with persistent instructions.

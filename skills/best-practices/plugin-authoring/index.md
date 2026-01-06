@@ -1,8 +1,3 @@
----
-name: plugin-authoring
-description: "Guide for creating Claude Code plugins and marketplaces. Covers plugin structure, marketplace.json, distribution, and the plugin vs skill distinction."
----
-
 # Plugin Authoring Guide
 
 Create and distribute Claude Code plugins and marketplaces.
@@ -201,7 +196,7 @@ You are a specialized agent for...
 ```
 
 ### Skills
-Directories in `skills/` with SKILL.md files. See the [skill-creator](../skill-creator/SKILL.md) sub-skill.
+Directories in `skills/` with SKILL.md files. See the [skill-creator](../skill-creator/index.md) sub-skill.
 
 ### Hooks
 JSON configuration in `hooks/` for event handlers:

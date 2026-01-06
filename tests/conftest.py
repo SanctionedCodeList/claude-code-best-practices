@@ -6,10 +6,6 @@ import shutil
 from pathlib import Path
 from datetime import datetime, timedelta
 import pytest
-import sys
-
-# Add scripts to path for imports
-sys.path.insert(0, str(Path(__file__).parent / "scripts"))
 
 
 @pytest.fixture
@@ -92,12 +88,12 @@ def temp_claude_dir(tmp_path, monkeypatch):
             f.write(json.dumps(msg) + "\n")
 
     # Patch the module constants
-    import sessions
-    monkeypatch.setattr(sessions, "CLAUDE_DIR", claude_dir)
-    monkeypatch.setattr(sessions, "PROJECTS_DIR", projects_dir)
-    monkeypatch.setattr(sessions, "INDEX_DIR", index_dir)
-    monkeypatch.setattr(sessions, "DB_PATH", index_dir / "sessions.db")
-    monkeypatch.setattr(sessions, "EMBEDDINGS_PATH", index_dir / "embeddings.npy")
+    from cc_best_practices.sessions import core
+    monkeypatch.setattr(core, "CLAUDE_DIR", claude_dir)
+    monkeypatch.setattr(core, "PROJECTS_DIR", projects_dir)
+    monkeypatch.setattr(core, "INDEX_DIR", index_dir)
+    monkeypatch.setattr(core, "DB_PATH", index_dir / "sessions.db")
+    monkeypatch.setattr(core, "EMBEDDINGS_PATH", index_dir / "embeddings.npy")
 
     return {
         "claude_dir": claude_dir,
@@ -111,23 +107,23 @@ def temp_claude_dir(tmp_path, monkeypatch):
 @pytest.fixture
 def indexed_sessions(temp_claude_dir):
     """Build the index for the test sessions."""
-    import sessions
-    stats = sessions.build_index(force=True, verbose=False)
+    from cc_best_practices.sessions import core
+    stats = core.build_index(force=True, verbose=False)
     return {**temp_claude_dir, "stats": stats}
 
 
 def pytest_markdown_docs_globals():
     """Provide globals available to all markdown code blocks."""
-    # Import lazily to avoid issues when sessions isn't installed
+    # Import lazily to avoid issues when package isn't installed
     try:
-        import sessions
+        from cc_best_practices import sessions
         return {
             "sessions": sessions,
             "search": sessions.search,
             "meta": sessions.meta,
             "read": sessions.read,
             "list_sessions": sessions.list_sessions,
-            "build_index": sessions.build_index,
+            "sync": sessions.sync,
         }
     except ImportError:
         return {}

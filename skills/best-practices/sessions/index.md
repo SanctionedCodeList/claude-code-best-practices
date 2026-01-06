@@ -1,21 +1,16 @@
----
-name: sessions
-description: Search and read Claude Code session histories efficiently. Use when users ask about past conversations, want to find previous work, review what was done in earlier sessions, or need to learn from past problem-solving. Triggers include "find the session where", "what did we do", "show me past conversations", "search my history", "previous sessions", "how did I solve", "continue where I left off".
----
-
 # Sessions
 
 Search and read Claude Code session histories with a context-efficient API.
 
 ## Setup
 
-Before using any API commands, run the install script:
+Before using, run the install script:
 
 ```bash notest
 ./install.sh
 ```
 
-This script is idempotent - it installs dependencies and syncs the session index. Run it:
+This installs the `cc-best-practices` package and syncs the session index. Run it:
 - First time to set up
 - Periodically to index new sessions
 - After any errors (ensures clean state)
@@ -26,15 +21,18 @@ Index location: `~/.claude/session-index/`
 
 Four operations: `search`, `meta`, `read`, and `list_sessions`.
 
+All operations are accessed via Python heredoc scripts:
+
+```bash notest
+python3 <<'EOF'
+from cc_best_practices.sessions import search, meta, read, list_sessions, sync
+# ... your code here
+EOF
+```
+
 ### search(query, limit?, project?)
 
 Semantic search across all sessions.
-
-```bash notest
-python3 scripts/sessions.py search "debugging authentication" --limit 5
-```
-
-Python API:
 
 ```python fixture:indexed_sessions
 results = sessions.search("authentication", limit=5)
@@ -48,12 +46,6 @@ if results:
 ### meta(session_id)
 
 Get session statistics without loading message content.
-
-```bash notest
-python3 scripts/sessions.py meta SESSION_ID
-```
-
-Python API:
 
 ```python fixture:indexed_sessions
 info = sessions.meta(indexed_sessions["session_id"])
@@ -108,12 +100,6 @@ assert len(last_2) <= 2
 ### list_sessions(project?, limit?)
 
 List recent sessions.
-
-```bash notest
-python3 scripts/sessions.py list --project my-app --limit 10
-```
-
-Python API:
 
 ```python fixture:indexed_sessions
 recent = sessions.list_sessions(limit=10)
@@ -295,7 +281,11 @@ Run `./install.sh` to sync new sessions (incremental, fast).
 Force full rebuild if index seems corrupted:
 
 ```bash notest
-.venv/bin/python scripts/sessions.py build --force -v
+python3 <<'EOF'
+from cc_best_practices.sessions import sync
+stats = sync(force=True, verbose=True)
+print(stats)
+EOF
 ```
 
 ## Reporting Issues

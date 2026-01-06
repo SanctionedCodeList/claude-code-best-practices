@@ -1,6 +1,6 @@
 ---
 name: best-practices
-description: "Claude Code best practices: skill creation, plugin authoring, context injection, session history, and configuration. Five sub-skills for power users."
+description: "Claude Code best practices: skill creation, plugin authoring, context injection, session history, Python setup, and configuration. Six sub-skills for power users."
 ---
 
 # Best Practices
@@ -11,11 +11,12 @@ Tools and guidance for Claude Code power users.
 
 | What do you need? | Go to |
 |-------------------|-------|
-| **Create a new skill** | [skill-creator/](./skill-creator/SKILL.md) |
-| **Author a plugin** | [plugin-authoring/](./plugin-authoring/SKILL.md) |
-| **Inject context (hooks, agents, MCP)** | [context-injection/](./context-injection/SKILL.md) |
-| **Search past sessions** | [sessions/](./sessions/SKILL.md) |
-| **Configure CLAUDE.md** | [claude-md/](./claude-md/SKILL.md) |
+| **Create a new skill** | [skill-creator/](./skill-creator/index.md) |
+| **Author a plugin** | [plugin-authoring/](./plugin-authoring/index.md) |
+| **Inject context (hooks, agents, MCP)** | [context-injection/](./context-injection/index.md) |
+| **Search past sessions** | [sessions/](./sessions/index.md) |
+| **Configure CLAUDE.md** | [claude-md/](./claude-md/index.md) |
+| **Set up Python for agents** | [python-setup/](./python-setup/index.md) |
 
 ## Sub-Skills
 
@@ -58,6 +59,15 @@ Guide for writing effective CLAUDE.md and AGENTS.md files. Covers:
 - File hierarchy and precedence
 - Recommended sections (delegation, boundaries, writing style)
 - Plugin issue reporting via git remote
+
+### python-setup
+
+Guide for configuring Python so Claude Code agents can reliably run scriptlets. Covers:
+- Shell configuration (.zshenv vs .zshrc for non-interactive shells)
+- pyenv/Homebrew PATH conflicts and resolution
+- Heredoc syntax for Python scriptlets
+- Package structure for agent-friendly libraries
+- Troubleshooting common import failures
 
 ## Setup
 
