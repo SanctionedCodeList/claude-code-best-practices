@@ -33,7 +33,7 @@ From `dev-browser` — a browser automation plugin:
 
 ## Plugin with Multiple Skills
 
-From `best-practices` — this plugin:
+From `cc-dev` — this plugin:
 
 ```json
 {
@@ -43,17 +43,17 @@ From `best-practices` — this plugin:
     "url": "https://github.com/SanctionedCodeList/claude-code-best-practices"
   },
   "metadata": {
-    "description": "Best practices and skills for Claude Code development",
+    "description": "Claude Code development tools and skills",
     "version": "0.1.0"
   },
   "plugins": [
     {
-      "name": "best-practices",
-      "description": "Claude Code best practices including skill creation, development workflows, and productivity tools",
+      "name": "cc-dev",
+      "description": "Claude Code development guide: skill creation, plugin authoring, context injection, and power user tools",
       "source": "./",
       "strict": false,
       "skills": [
-        "./skills/best-practices"
+        "./skills/cc-dev"
       ]
     }
   ]
@@ -114,12 +114,12 @@ From `scl-marketplace` — distributes plugins from multiple repos:
       "description": "Document creation, editing, and analysis with tracked changes support for .docx files."
     },
     {
-      "name": "best-practices",
+      "name": "cc-dev",
       "source": {
         "source": "github",
         "repo": "SanctionedCodeList/claude-code-best-practices"
       },
-      "description": "Claude Code development best practices including skill creation guidance and session history search."
+      "description": "Claude Code development guide: skill creation, plugin authoring, context injection, and session history search."
     },
     {
       "name": "dev-browser",

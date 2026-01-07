@@ -283,7 +283,7 @@ else
     echo "Fix the errors above to ensure Claude Code agents can run Python reliably."
     echo ""
     echo "For detailed guidance, see:"
-    echo "  skills/best-practices/python-setup/index.md"
+    echo "  skills/cc-dev/python-setup/index.md"
     echo ""
     exit 1
 fi

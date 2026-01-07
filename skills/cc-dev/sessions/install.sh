@@ -62,14 +62,14 @@ echo ""
 
 # Use python3 -m pip to ensure we install to the same Python that python3 resolves to
 # --break-system-packages handles Homebrew Python (PEP 668) - safe with --user flag
-echo "Installing cc-best-practices package..."
+echo "Installing cc-dev package..."
 if [ -f "$REPO_ROOT/pyproject.toml" ]; then
     python3 -m pip install --user --break-system-packages -q -e "$REPO_ROOT" 2>/dev/null || \
     python3 -m pip install --user -q -e "$REPO_ROOT"
 else
     # Fallback: install from PyPI if available, or fail
-    python3 -m pip install --user --break-system-packages -q cc-best-practices 2>/dev/null || \
-    python3 -m pip install --user -q cc-best-practices || {
+    python3 -m pip install --user --break-system-packages -q cc-dev 2>/dev/null || \
+    python3 -m pip install --user -q cc-dev || {
         echo "Error: Could not find pyproject.toml at $REPO_ROOT"
         echo "Please run from within the claude-code-best-practices repository"
         exit 1
@@ -79,7 +79,7 @@ fi
 # ── Verify Installation ──────────────────────────────────────────────────────
 
 echo "Verifying installation..."
-if ! python3 -c "import cc_best_practices" 2>/dev/null; then
+if ! python3 -c "import cc_dev" 2>/dev/null; then
     echo ""
     echo "ERROR: Package installed but cannot be imported!"
     echo ""
@@ -98,7 +98,7 @@ fi
 
 echo "Syncing session index..."
 python3 <<'EOF'
-from cc_best_practices.sessions import sync
+from cc_dev.sessions import sync
 stats = sync()
 print(f"Indexed: {stats.get('indexed', 0)}, Skipped: {stats.get('skipped', 0)}")
 EOF

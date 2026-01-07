@@ -4,7 +4,7 @@ Claude Code Session History API
 Provides search, meta, read, and list operations for Claude Code session histories.
 
 Usage:
-    from cc_best_practices.sessions import search, meta, read, list_sessions, sync
+    from cc_dev.sessions import search, meta, read, list_sessions, sync
 
     # Search sessions semantically
     results = search("debugging authentication", limit=5)
@@ -22,7 +22,7 @@ Usage:
     stats = sync()
 """
 
-from cc_best_practices.sessions.core import (
+from cc_dev.sessions.core import (
     search,
     meta,
     read,

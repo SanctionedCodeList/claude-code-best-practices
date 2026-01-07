@@ -1,9 +1,9 @@
 ---
-name: best-practices
-description: "Claude Code best practices: skill creation, plugin authoring, context injection, session history, Python setup, and configuration. Six sub-skills for power users."
+name: cc-dev
+description: "Claude Code development guide: skill creation, plugin authoring, context injection, session history, Python setup, and configuration. Six sub-skills for power users."
 ---
 
-# Best Practices
+# CC Dev
 
 Tools and guidance for Claude Code power users.
 

@@ -203,7 +203,7 @@ from my_package import function1, function2
 Run the test script to check your configuration:
 
 ```bash
-./skills/best-practices/python-setup/test-setup.sh
+./skills/cc-dev/python-setup/test-setup.sh
 ```
 
 This tests:

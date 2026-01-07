@@ -10,7 +10,7 @@ Before using, run the install script:
 ./install.sh
 ```
 
-This installs the `cc-best-practices` package and syncs the session index. Run it:
+This installs the `cc-dev` package and syncs the session index. Run it:
 - First time to set up
 - Periodically to index new sessions
 - After any errors (ensures clean state)
@@ -25,7 +25,7 @@ All operations are accessed via Python heredoc scripts:
 
 ```bash notest
 python3 <<'EOF'
-from cc_best_practices.sessions import search, meta, read, list_sessions, sync
+from cc_dev.sessions import search, meta, read, list_sessions, sync
 # ... your code here
 EOF
 ```
@@ -282,7 +282,7 @@ Force full rebuild if index seems corrupted:
 
 ```bash notest
 python3 <<'EOF'
-from cc_best_practices.sessions import sync
+from cc_dev.sessions import sync
 stats = sync(force=True, verbose=True)
 print(stats)
 EOF

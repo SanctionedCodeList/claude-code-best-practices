@@ -88,7 +88,7 @@ def temp_claude_dir(tmp_path, monkeypatch):
             f.write(json.dumps(msg) + "\n")
 
     # Patch the module constants
-    from cc_best_practices.sessions import core
+    from cc_dev.sessions import core
     monkeypatch.setattr(core, "CLAUDE_DIR", claude_dir)
     monkeypatch.setattr(core, "PROJECTS_DIR", projects_dir)
     monkeypatch.setattr(core, "INDEX_DIR", index_dir)
@@ -107,7 +107,7 @@ def temp_claude_dir(tmp_path, monkeypatch):
 @pytest.fixture
 def indexed_sessions(temp_claude_dir):
     """Build the index for the test sessions."""
-    from cc_best_practices.sessions import core
+    from cc_dev.sessions import core
     stats = core.build_index(force=True, verbose=False)
     return {**temp_claude_dir, "stats": stats}
 
@@ -116,7 +116,7 @@ def pytest_markdown_docs_globals():
     """Provide globals available to all markdown code blocks."""
     # Import lazily to avoid issues when package isn't installed
     try:
-        from cc_best_practices import sessions
+        from cc_dev import sessions
         return {
             "sessions": sessions,
             "search": sessions.search,

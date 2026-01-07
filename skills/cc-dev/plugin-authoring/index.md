@@ -137,7 +137,7 @@ Install plugin: `/plugin install law-tools@scl-marketplace`
 /plugin marketplace add SanctionedCodeList/SCL_marketplace
 
 # Install a plugin from that marketplace
-/plugin install best-practices@scl-marketplace
+/plugin install cc-dev@scl-marketplace
 
 # Or install directly from GitHub
 /plugin install owner/repo

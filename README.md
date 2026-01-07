@@ -26,7 +26,7 @@ claude plugins add SanctionedCodeList/claude-code-best-practices
 
 ```bash
 claude plugins list
-# Should show: best-practices
+# Should show: cc-dev
 ```
 
 ### Try It Out
