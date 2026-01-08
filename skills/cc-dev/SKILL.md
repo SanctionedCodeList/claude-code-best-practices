@@ -1,6 +1,6 @@
 ---
 name: cc-dev
-description: "Claude Code development guide: plugin authoring, context injection, session history, Python setup, and configuration. Five sub-skills for power users."
+description: "Claude Code development guide: plugin authoring, context injection, session history, Python setup, debugging, and configuration. Six sub-skills for power users."
 ---
 
 # CC Dev
@@ -16,6 +16,7 @@ Tools and guidance for Claude Code power users.
 | **Search past sessions** | [sessions/](./sessions/index.md) |
 | **Configure CLAUDE.md** | [claude-md/](./claude-md/index.md) |
 | **Set up Python for agents** | [python-setup/](./python-setup/index.md) |
+| **Debug Claude Code** | [debugging/](./debugging/index.md) |
 
 ## Sub-Skills
 
@@ -59,6 +60,14 @@ Guide for configuring Python so Claude Code agents can reliably run scriptlets. 
 - Heredoc syntax for Python scriptlets
 - Package structure for agent-friendly libraries
 - Troubleshooting common import failures
+
+### debugging
+
+Techniques for debugging Claude Code behavior, configuration, and plugins. Covers:
+- Using dev-terminal to debug Claude Code from Claude Code
+- Configuration file locations reference
+- Common debugging tasks and approaches
+- Logs and state inspection
 
 ## Setup
 

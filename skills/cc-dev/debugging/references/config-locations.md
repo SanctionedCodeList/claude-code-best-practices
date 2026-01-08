@@ -1,5 +1,11 @@
 # Configuration File Locations
 
+> **Warning: Internal Implementation Details**
+>
+> These file locations and formats are internal to Claude Code and may change without notice in future versions. Do not build automation that depends on these formats.
+>
+> **Last verified:** Claude Code v2.0.76
+
 Complete reference for Claude Code configuration paths.
 
 ## Settings
