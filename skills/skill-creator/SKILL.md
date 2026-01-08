@@ -1,3 +1,8 @@
+---
+name: skill-creator
+description: "Guide for building Claude Code skills. Use when creating new skills, packaging skills for distribution, or learning skill anatomy (SKILL.md, scripts/, references/, progressive disclosure). Covers validation, bundled resources, and design patterns."
+---
+
 # Skill Creator
 
 This skill provides guidance for creating effective skills.

@@ -1,6 +1,6 @@
 ---
 name: cc-dev
-description: "Claude Code development guide: skill creation, plugin authoring, context injection, session history, Python setup, and configuration. Six sub-skills for power users."
+description: "Claude Code development guide: plugin authoring, context injection, session history, Python setup, and configuration. Five sub-skills for power users."
 ---
 
 # CC Dev
@@ -11,7 +11,6 @@ Tools and guidance for Claude Code power users.
 
 | What do you need? | Go to |
 |-------------------|-------|
-| **Create a new skill** | [skill-creator/](./skill-creator/index.md) |
 | **Author a plugin** | [plugin-authoring/](./plugin-authoring/index.md) |
 | **Inject context (hooks, agents, MCP)** | [context-injection/](./context-injection/index.md) |
 | **Search past sessions** | [sessions/](./sessions/index.md) |
@@ -19,14 +18,6 @@ Tools and guidance for Claude Code power users.
 | **Set up Python for agents** | [python-setup/](./python-setup/index.md) |
 
 ## Sub-Skills
-
-### skill-creator
-
-Comprehensive guide for building effective Claude Code skills. Covers:
-- Skill anatomy (SKILL.md, scripts/, references/)
-- Progressive disclosure patterns
-- Data model design for AI systems
-- Validation and packaging tools
 
 ### plugin-authoring
 
@@ -77,4 +68,4 @@ Run the installer to set up dependencies:
 ./install.sh
 ```
 
-This installs Python dependencies for the sessions sub-skill. The skill-creator sub-skill requires no setup.
+This installs Python dependencies for the sessions sub-skill.
