@@ -17,6 +17,15 @@
       "skills": [
         "./skills/cc-dev"
       ]
+    },
+    {
+      "name": "introspect",
+      "description": "Introspect and manage Claude Code configuration: MCP servers, plugins, skills, and marketplaces",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/introspect"
+      ]
     }
   ]
 }

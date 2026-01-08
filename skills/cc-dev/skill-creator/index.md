@@ -83,6 +83,14 @@ Executable code (Python/Bash/etc.) for tasks that require deterministic reliabil
 - **Benefits**: Token efficient, deterministic, may be executed without loading into context
 - **Issue reporting**: If scripts contain non-trivial logic that may have bugs, include where to report issues in SKILL.md
 
+#### Library-Backed Skills
+
+When a skill requires libraries or complex code beyond simple scripts, the skill should live **in the library's repository** (in a `./skills` folder). See [library-backed-skills.md](references/library-backed-skills.md) for:
+- Repository structure patterns
+- Agent execution via heredocs (not CLIs)
+- File-based content exchange
+- External state management with `start.sh`
+
 #### References (`references/`)
 
 Documentation and reference material intended to be loaded as needed into context.
@@ -267,4 +275,5 @@ gh issue list --repo SanctionedCodeList/claude-code-best-practices
 - [testable-code-examples.md](references/testable-code-examples.md) - Validating code snippets in documentation
 - [progressive-disclosure-patterns.md](references/progressive-disclosure-patterns.md) - Patterns for organizing content to minimize context usage
 - [data-models.md](references/data-models.md) - Data model design and structured output best practices
+- [library-backed-skills.md](references/library-backed-skills.md) - Skills with libraries: heredocs, file exchange, external state
 - [advanced-tools.md](references/advanced-tools.md) - Template build system and structure validation
