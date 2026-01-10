@@ -4,17 +4,24 @@ Skill structure validation script.
 
 Validates the internal structure of a skill to ensure consistency and navigability.
 
-Checks:
+Standard checks:
 1. No orphan .md files (files with no incoming links that should be reachable)
 2. Max depth from entry points ≤ configurable limit
 3. No broken links (links to non-existent files)
 4. Generated files have AUTO-GENERATED headers
 5. File length within recommended limits
 
+Knowledge base mode (--km) adds:
+6. Every folder has index.md (except exception folders prefixed with _)
+7. Index files have ## Links section with descriptions
+8. No horizontal rules (---) in content
+9. File naming conventions (lowercase, hyphens not underscores)
+
 Can be dropped into any skill directory. Configuration via .validate.json or auto-detection.
 
 Usage:
-    python structure_validate.py                    # Run all checks
+    python structure_validate.py                    # Run standard checks
+    python structure_validate.py --km               # Run with knowledge base checks
     python structure_validate.py --focus subdir     # Only check subdirectory
     python structure_validate.py --graph            # Output mermaid diagram
     python structure_validate.py --root /path/to/skill  # Specify skill root
@@ -39,6 +46,7 @@ DEFAULT_CONFIG = {
         ".build-manifest",
     ],
     "known_issues": {},
+    "km_mode": False,  # Enable knowledge base checks
 }
 
 
@@ -71,6 +79,20 @@ def find_entry_points(skill_root: Path) -> list[str]:
                     entry_points.append(f"{subdir.name}/{name}")
 
     return entry_points
+
+
+def is_exception_folder(path: Path) -> bool:
+    """Check if folder is an exception folder (prefixed with _)."""
+    return path.name.startswith("_")
+
+
+def is_in_exception_folder(path: Path, skill_root: Path) -> bool:
+    """Check if path is inside an exception folder."""
+    try:
+        rel_path = path.relative_to(skill_root)
+        return any(part.startswith("_") for part in rel_path.parts)
+    except ValueError:
+        return False
 
 
 def should_exclude(path: Path, patterns: list[str]) -> bool:
@@ -243,6 +265,179 @@ def check_file_lengths(
     return errors, warnings
 
 
+# === Knowledge Base Mode Checks ===
+
+
+def check_folder_has_index(skill_root: Path) -> list[str]:
+    """Check if all folders have index.md (except exception folders)."""
+    missing = []
+
+    for folder in skill_root.rglob("*"):
+        if not folder.is_dir():
+            continue
+
+        # Skip hidden folders
+        if any(part.startswith(".") for part in folder.relative_to(skill_root).parts):
+            continue
+
+        # Skip exception folders and their contents
+        if is_exception_folder(folder) or is_in_exception_folder(folder, skill_root):
+            continue
+
+        # Skip folders that only contain non-md files (assets, scripts, etc.)
+        has_md_files = any(folder.glob("*.md"))
+        has_subfolders_with_md = any(
+            sf.is_dir() and any(sf.rglob("*.md"))
+            for sf in folder.iterdir()
+            if sf.is_dir()
+        )
+
+        if not has_md_files and not has_subfolders_with_md:
+            continue
+
+        # Check for index.md or INDEX.md
+        if not (folder / "index.md").exists() and not (folder / "INDEX.md").exists():
+            rel_path = folder.relative_to(skill_root)
+            missing.append(str(rel_path))
+
+    return sorted(missing)
+
+
+def extract_links_from_section(content: str) -> list[tuple[str, str, str]]:
+    """
+    Extract links from ## Links section.
+    Returns list of (name, path, description) tuples.
+    """
+    links = []
+
+    # Find ## Links section
+    links_match = re.search(r"^## Links\s*$", content, re.MULTILINE)
+    if not links_match:
+        return links
+
+    # Get content after ## Links until next ## or end
+    links_section = content[links_match.end():]
+    next_section = re.search(r"^## ", links_section, re.MULTILINE)
+    if next_section:
+        links_section = links_section[:next_section.start()]
+
+    # Parse links in format: - [Name](path) - description
+    link_pattern = r"^\s*-\s*\[([^\]]+)\]\(([^)]+)\)\s*(?:-\s*(.+?))?$"
+
+    for line in links_section.split("\n"):
+        match = re.match(link_pattern, line)
+        if match:
+            name, path, desc = match.groups()
+            links.append((name, path, desc or ""))
+
+    return links
+
+
+def check_links_sections(skill_root: Path) -> tuple[list[str], list[str]]:
+    """
+    Check if index files have proper ## Links section with descriptions.
+    Returns (errors, warnings).
+    """
+    errors = []
+    warnings = []
+
+    for md_file in skill_root.rglob("*.md"):
+        # Only check SKILL.md and index.md files
+        if md_file.name not in ("SKILL.md", "index.md", "INDEX.md"):
+            continue
+
+        # Skip files in exception folders
+        if is_in_exception_folder(md_file, skill_root):
+            continue
+
+        rel_path = md_file.relative_to(skill_root)
+        content = md_file.read_text()
+
+        # Check for ## Links section
+        if not re.search(r"^## Links\s*$", content, re.MULTILINE):
+            warnings.append(f"Missing ## Links section: {rel_path}")
+            continue
+
+        # Extract and validate links
+        links = extract_links_from_section(content)
+
+        if not links:
+            warnings.append(f"Empty ## Links section: {rel_path}")
+            continue
+
+        for name, path, desc in links:
+            # Check link has description
+            if not desc.strip():
+                errors.append(f"Link without description in {rel_path}: [{name}]({path})")
+
+    return errors, warnings
+
+
+def check_horizontal_rules(skill_root: Path) -> list[str]:
+    """Check for horizontal rules (---) outside of YAML frontmatter."""
+    warnings = []
+
+    for md_file in skill_root.rglob("*.md"):
+        # Skip files in exception folders
+        if is_in_exception_folder(md_file, skill_root):
+            continue
+
+        content = md_file.read_text()
+        lines = content.split("\n")
+        rel_path = md_file.relative_to(skill_root)
+
+        # Track YAML frontmatter
+        in_frontmatter = False
+        frontmatter_closed = False
+
+        for i, line in enumerate(lines, 1):
+            stripped = line.strip()
+
+            # Handle YAML frontmatter (only at start of file)
+            if i == 1 and stripped == "---":
+                in_frontmatter = True
+                continue
+
+            if in_frontmatter and not frontmatter_closed:
+                if stripped == "---":
+                    frontmatter_closed = True
+                continue
+
+            # Check for horizontal rules (---, ***, ___)
+            if re.match(r"^[-*_]{3,}\s*$", stripped) or re.match(r"^[-*_](\s*[-*_]){2,}\s*$", stripped):
+                warnings.append(f"Horizontal rule at line {i}: {rel_path}")
+
+    return warnings
+
+
+def check_file_naming(skill_root: Path) -> list[str]:
+    """Check if files follow naming conventions (lowercase with hyphens)."""
+    warnings = []
+
+    for md_file in skill_root.rglob("*.md"):
+        name = md_file.stem
+
+        # Allow special files
+        if name in ("SKILL", "STRUCTURE", "SITEMAP", "INDEX", "README"):
+            continue
+
+        # Skip files in exception folders
+        if is_in_exception_folder(md_file, skill_root):
+            continue
+
+        rel_path = md_file.relative_to(skill_root)
+
+        # Check for uppercase
+        if name != name.lower():
+            warnings.append(f"File name not lowercase: {rel_path}")
+
+        # Check for underscores (should use hyphens)
+        elif "_" in name and name != "index":
+            warnings.append(f"File name uses underscores instead of hyphens: {rel_path}")
+
+    return sorted(warnings)
+
+
 def generate_mermaid_graph(outgoing: dict, depths: dict) -> str:
     """Generate a mermaid flowchart of the link structure."""
     lines = ["```mermaid", "flowchart TD"]
@@ -300,6 +495,7 @@ def main():
     parser.add_argument("--focus", type=str, help="Focus on subdirectory")
     parser.add_argument("--strict", action="store_true", help="Don't suppress known issues")
     parser.add_argument("--root", type=Path, help="Skill root directory")
+    parser.add_argument("--km", action="store_true", help="Enable knowledge base mode checks")
     args = parser.parse_args()
 
     # Determine skill root
@@ -319,8 +515,12 @@ def main():
     excluded_patterns = config["excluded_patterns"]
     known_issues = config.get("known_issues", {})
 
+    # Enable KM mode from config or command line
+    km_mode = args.km or config.get("km_mode", False)
+
     focus_msg = f" (focus: {args.focus}/)" if args.focus else ""
-    print(f"Validating {skill_root.name} skill{focus_msg}...\n")
+    km_msg = " [knowledge base mode]" if km_mode else ""
+    print(f"Validating {skill_root.name} skill{focus_msg}{km_msg}...\n")
 
     if args.verbose:
         print(f"Entry points: {entry_points}")
@@ -452,6 +652,60 @@ def main():
 
     if not length_errors and not length_warnings:
         print(f"✅ All files within {max_warning} lines")
+
+    # === Knowledge Base Mode Checks ===
+    if km_mode:
+        print("\n--- Knowledge Base Checks ---")
+
+        # Check folders have index.md
+        missing_indexes = check_folder_has_index(skill_root)
+        filtered_indexes = [i for i in missing_indexes if matches_focus(i, args.focus)]
+        if filtered_indexes:
+            print(f"\n❌ MISSING INDEX.MD ({len(filtered_indexes)}):")
+            for folder in filtered_indexes:
+                print(f"   {folder}/")
+            issues += len(filtered_indexes)
+        else:
+            print("✅ All folders have index.md")
+
+        # Check ## Links sections
+        links_errors, links_warnings = check_links_sections(skill_root)
+        filtered_links_errors = [e for e in links_errors if matches_focus(e.split(":")[0].split(" ")[-1], args.focus)]
+        filtered_links_warnings = [w for w in links_warnings if matches_focus(w.split(":")[0].split(" ")[-1], args.focus)]
+
+        if filtered_links_errors:
+            print(f"\n❌ LINKS SECTION ERRORS ({len(filtered_links_errors)}):")
+            for err in filtered_links_errors:
+                print(f"   {err}")
+            issues += len(filtered_links_errors)
+
+        if filtered_links_warnings:
+            print(f"\n⚠️  LINKS SECTION WARNINGS ({len(filtered_links_warnings)}):")
+            for warn in filtered_links_warnings:
+                print(f"   {warn}")
+
+        if not filtered_links_errors and not filtered_links_warnings:
+            print("✅ All index files have proper ## Links sections")
+
+        # Check horizontal rules
+        hr_warnings = check_horizontal_rules(skill_root)
+        filtered_hr = [h for h in hr_warnings if matches_focus(h.split(": ")[-1], args.focus)]
+        if filtered_hr:
+            print(f"\n⚠️  HORIZONTAL RULES ({len(filtered_hr)}):")
+            for hr in filtered_hr:
+                print(f"   {hr}")
+        else:
+            print("✅ No horizontal rules in content")
+
+        # Check file naming
+        naming_warnings = check_file_naming(skill_root)
+        filtered_naming = [n for n in naming_warnings if matches_focus(str(n), args.focus)]
+        if filtered_naming:
+            print(f"\n⚠️  NAMING CONVENTIONS ({len(filtered_naming)}):")
+            for warn in filtered_naming:
+                print(f"   {warn}")
+        else:
+            print("✅ All files follow naming conventions")
 
     # Summary
     print(f"\n{'─' * 40}")
